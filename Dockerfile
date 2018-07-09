@@ -1,7 +1,5 @@
 FROM node:8.11-alpine as node-angular-cli
 
-LABEL authors="John Papa"
-
 #Linux setup
 RUN apk update \
   && apk add --update alpine-sdk \
@@ -10,5 +8,11 @@ RUN apk update \
   && npm cache verify \
   && sed -i -e "s/bin\/ash/bin\/sh/" /etc/passwd
 
+#Install yarn
+RUN apk --update add --no-cache yarn 
+
 #Angular CLI
-RUN npm install -g @angular/cli
+RUN yarn global add @angular/cli@latest \
+  && ng set --global packageManager=yarn
+
+CMD ["/bin/sh"]
